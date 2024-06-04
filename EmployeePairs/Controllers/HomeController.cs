@@ -35,8 +35,14 @@ public class HomeController : Controller
     {
         if (csvFile == null || csvFile.Length == 0)
         {
-            ModelState.AddModelError("File", "Please upload a CSV file.");
             return View("UploadCsv");
+        }
+
+        var extension = Path.GetExtension(csvFile.FileName);
+
+        if (!string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase))
+        {
+            return View("Error", new ErrorViewModel() { Details = "Please upload a CSV file." });
         }
 
         var records = new List<EmployeeProjectDto>();
@@ -48,6 +54,17 @@ public class HomeController : Controller
         using (var reader = new StreamReader(csvFile.OpenReadStream()))
         using (var csvReader = new CsvReader(reader, csvConfiguration))
         {
+            var expectedColumns = "EmpID, ProjectID, DateFrom, DateTo";
+            var firstLine = reader.ReadLine();
+
+            if (!expectedColumns.Equals(firstLine, StringComparison.OrdinalIgnoreCase))
+            {
+                return View("Error", new ErrorViewModel() { Details = "Upload CSV file doesn't have the corect columns." });
+            }
+
+            reader.BaseStream.Position = 0;
+            reader.DiscardBufferedData();
+
             csvReader.Read();
             records = csvReader.GetRecords<EmployeeProjectDto>().ToList();
         }
