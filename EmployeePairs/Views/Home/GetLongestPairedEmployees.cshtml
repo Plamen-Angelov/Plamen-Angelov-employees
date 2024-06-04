@@ -1,0 +1,30 @@
+﻿@using EmployeePairs.Models
+@model List<ProjectPair>
+
+@{
+    ViewData["Title"] = "Longest paired employees";
+}
+
+<h2>Longest paired employees</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee ID #1 </th>
+            <th>Employee ID #2</th>
+            <th>Projct ID</th>
+            <th>Days worked</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            <tr>
+                <td>@record.EmployeeOneId</td>
+                <td>@record.EmployeeTwoId</td>
+                <td>@record.ProjectId</td>
+                <td>@record.DaysWorked</td>
+            </tr>
+        }
+    </tbody>
+</table>

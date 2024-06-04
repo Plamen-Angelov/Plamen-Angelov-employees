@@ -1,7 +1,11 @@
+using EmployeePairs.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<EmployeePairService>();
 
 var app = builder.Build();
 
