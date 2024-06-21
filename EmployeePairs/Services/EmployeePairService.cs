@@ -83,7 +83,7 @@ public class EmployeePairService
 
         return startDate >= endDate
             ? 0
-            : (endDate - startDate).Days;
+            : (endDate - startDate).Days + 1;
     }
 
 }
